@@ -1,0 +1,322 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1620" width="2560" height="1620" font-family="Liberation Sans, DejaVu Sans, Arial, sans-serif">
+<title>Amazon EKS workshop architecture: Karpenter, Kargo, Argo CD</title>
+<rect width="2560" height="1620" fill="#ffffff"/>
+<defs>
+<marker id="m_2563EB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563EB"/></marker>
+<marker id="m_ED7100" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ED7100"/></marker>
+<marker id="m_6B7280" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
+<marker id="m_E7157B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E7157B"/></marker>
+<marker id="m_5B6572" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6572"/></marker>
+<marker id="m_C026D3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C026D3"/></marker>
+<marker id="m_DD344C" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#DD344C"/></marker>
+<marker id="m_15803D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.2" markerHeight="5.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803D"/></marker>
+</defs>
+<text x="40" y="58" font-size="46" font-weight="700" fill="#0F2A43" text-anchor="start">Amazon EKS Workshop: Karpenter + Kargo + Argo CD</text>
+<text x="40" y="92" font-size="22" font-weight="400" fill="#4B5563" text-anchor="start">Kiến trúc AWS tham chiếu: tự co giãn node (Karpenter) và promotion có kiểm soát (Kargo + Argo CD)</text>
+<text x="2520" y="58" font-size="26" font-weight="400" fill="#4B5563" text-anchor="end" font-style="italic">Conceptual design - workshop reference</text>
+<line x1="40" y1="100" x2="2520" y2="100" stroke="#ff9900" stroke-width="3"/>
+<rect x="25" y="115" width="285" height="1230" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="10 7" />
+<text x="40" y="143" font-size="21" font-weight="700" fill="#5B6572" text-anchor="start">Outside AWS</text>
+<rect x="335" y="115" width="2200" height="1230" rx="14" fill="#ffffff" stroke="#232F3E" stroke-width="3.5" />
+<rect x="350" y="122" width="36" height="28" rx="5" fill="#232F3E" stroke="none" stroke-width="2" />
+<text x="368" y="143" font-size="15" font-weight="700" fill="#ff9900" text-anchor="middle">aws</text>
+<text x="396" y="145" font-size="24" font-weight="700" fill="#232F3E" text-anchor="start">AWS Cloud</text>
+<rect x="355" y="270" width="2160" height="1060" rx="12" fill="#fbfefe" stroke="#00A4A6" stroke-width="3" stroke-dasharray="14 8" />
+<text x="375" y="303" font-size="22" font-weight="700" fill="#00797b" text-anchor="start">Region (e.g. us-east-1)</text>
+<rect x="650" y="290" width="1495" height="1025" rx="12" fill="#fbf9ff" stroke="#8C4FFF" stroke-width="3.5" />
+<text x="670" y="324" font-size="25" font-weight="700" fill="#8C4FFF" text-anchor="start">VPC</text>
+<text x="735" y="324" font-size="18" font-weight="400" fill="#4B5563" text-anchor="start">· 2 AZs shown</text>
+<rect x="675" y="335" width="710" height="960" rx="10" fill="none" stroke="#147EBA" stroke-width="2.5" stroke-dasharray="12 7" />
+<text x="695" y="363" font-size="20" font-weight="700" fill="#147EBA" text-anchor="start">Availability Zone A</text>
+<rect x="1410" y="335" width="710" height="960" rx="10" fill="none" stroke="#147EBA" stroke-width="2.5" stroke-dasharray="12 7" />
+<text x="1430" y="363" font-size="20" font-weight="700" fill="#147EBA" text-anchor="start">Availability Zone B</text>
+<rect x="695" y="380" width="670" height="180" rx="8" fill="#f1faf0" stroke="#7AA116" stroke-width="2.5" />
+<text x="710" y="407" font-size="19" font-weight="700" fill="#5b7a0e" text-anchor="start">Public subnet</text>
+<rect x="695" y="590" width="670" height="695" rx="8" fill="#eef5fc" stroke="#147EBA" stroke-width="2.5" />
+<text x="710" y="618" font-size="19" font-weight="700" fill="#147EBA" text-anchor="start">Private subnet</text>
+<rect x="1430" y="380" width="670" height="180" rx="8" fill="#f1faf0" stroke="#7AA116" stroke-width="2.5" />
+<text x="2085" y="407" font-size="19" font-weight="700" fill="#5b7a0e" text-anchor="end">Public subnet</text>
+<rect x="1430" y="590" width="670" height="695" rx="8" fill="#eef5fc" stroke="#147EBA" stroke-width="2.5" />
+<text x="2085" y="618" font-size="19" font-weight="700" fill="#147EBA" text-anchor="end">Private subnet</text>
+<rect x="40" y="165" width="235" height="85" rx="10" fill="#ffffff" stroke="#5B6572" stroke-width="3" />
+<rect x="50" y="175" width="36" height="36" rx="6" fill="#5B6572" stroke="none" stroke-width="2" />
+<text x="68.0" y="197.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">USR</text>
+<text x="96" y="200" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">Users</text>
+<text x="54" y="233" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">web / mobile</text>
+<rect x="390" y="165" width="240" height="85" rx="10" fill="#ffffff" stroke="#8C4FFF" stroke-width="3" />
+<rect x="400" y="175" width="36" height="36" rx="6" fill="#8C4FFF" stroke="none" stroke-width="2" />
+<text x="418.0" y="197.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">R53</text>
+<text x="446" y="200" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">Route 53</text>
+<text x="404" y="233" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">DNS (optional)</text>
+<rect x="1302" y="275" width="190" height="62" rx="10" fill="#ffffff" stroke="#8C4FFF" stroke-width="3" />
+<text x="1397.0" y="314.0" font-size="19" font-weight="700" fill="#0F2A43" text-anchor="middle">Internet Gateway</text>
+<rect x="1297" y="410" width="200" height="110" rx="10" fill="#ffffff" stroke="#8C4FFF" stroke-width="3" />
+<text x="1397.0" y="451.0" font-size="22" font-weight="700" fill="#0F2A43" text-anchor="middle">ALB</text>
+<text x="1397.0" y="476.0" font-size="16" font-weight="400" fill="#4B5563" text-anchor="middle">Application Load</text>
+<text x="1397.0" y="498.0" font-size="16" font-weight="400" fill="#4B5563" text-anchor="middle">Balancer</text>
+<rect x="1000" y="425" width="190" height="92" rx="10" fill="#ffffff" stroke="#8C4FFF" stroke-width="3" />
+<text x="1095.0" y="468.0" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="middle">NAT Gateway</text>
+<text x="1095.0" y="493.0" font-size="16" font-weight="400" fill="#4B5563" text-anchor="middle">egress to internet</text>
+<rect x="1640" y="425" width="190" height="92" rx="10" fill="#ffffff" stroke="#8C4FFF" stroke-width="3" />
+<text x="1735.0" y="468.0" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="middle">NAT Gateway</text>
+<text x="1735.0" y="493.0" font-size="16" font-weight="400" fill="#4B5563" text-anchor="middle">egress to internet</text>
+<rect x="704" y="695" width="72" height="70" rx="8" fill="#fff7ed" stroke="#ED7100" stroke-width="2.5" />
+<text x="740" y="725" font-size="17" font-weight="700" fill="#0F2A43" text-anchor="middle">EKS</text>
+<text x="740" y="750" font-size="17" font-weight="700" fill="#0F2A43" text-anchor="middle">ENI</text>
+<rect x="790" y="650" width="270" height="160" rx="10" fill="#fff7ed" stroke="#ED7100" stroke-width="2.5" />
+<rect x="800" y="660" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="818.0" y="682.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EC2</text>
+<text x="846" y="683" font-size="20" font-weight="700" fill="#0F2A43" text-anchor="start">EC2 Spot</text>
+<text x="804" y="716" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">launched by Karpenter</text>
+<rect x="805" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="861.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="930" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="986.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="1075" y="650" width="275" height="160" rx="10" fill="#fff7ed" stroke="#ED7100" stroke-width="2.5" />
+<rect x="1085" y="660" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="1103.0" y="682.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EC2</text>
+<text x="1131" y="683" font-size="20" font-weight="700" fill="#0F2A43" text-anchor="start">EC2 On-Demand</text>
+<text x="1089" y="716" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">launched by Karpenter</text>
+<rect x="1090" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="1146.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="1218" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="1274.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="790" y="930" width="560" height="340" rx="10" fill="#fffaf3" stroke="#ED7100" stroke-width="2.5" stroke-dasharray="8 5" />
+<text x="805" y="957" font-size="18" font-weight="700" fill="#0F2A43" text-anchor="start">Managed node group - system (On-Demand)</text>
+<rect x="810" y="975" width="520" height="90" rx="10" fill="#eaf1ff" stroke="#326CE5" stroke-width="2.5" />
+<text x="826" y="1006" font-size="22" font-weight="700" fill="#0F2A43" text-anchor="start">Argo CD</text>
+<text x="826" y="1032" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">pull from Git, sync manifests to the cluster</text>
+<rect x="810" y="1105" width="520" height="150" rx="10" fill="#eaf1ff" stroke="#326CE5" stroke-width="2.5" />
+<text x="826" y="1136" font-size="22" font-weight="700" fill="#0F2A43" text-anchor="start">Kargo</text>
+<text x="826" y="1162" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">Warehouse &gt; Freight &gt; Stages</text>
+<rect x="830" y="1198" width="110" height="42" rx="8" fill="#ffffff" stroke="#2563EB" stroke-width="2" />
+<text x="885" y="1226" font-size="18" font-weight="700" fill="#0F2A43" text-anchor="middle">test</text>
+<rect x="985" y="1198" width="110" height="42" rx="8" fill="#ffffff" stroke="#2563EB" stroke-width="2" />
+<text x="1040" y="1226" font-size="18" font-weight="700" fill="#0F2A43" text-anchor="middle">uat</text>
+<rect x="1140" y="1198" width="110" height="42" rx="8" fill="#ffffff" stroke="#2563EB" stroke-width="2" />
+<text x="1195" y="1226" font-size="18" font-weight="700" fill="#0F2A43" text-anchor="middle">prod</text>
+<path d="M940,1219 L985,1219" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M1095,1219 L1140,1219" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<rect x="1450" y="650" width="305" height="160" rx="10" fill="#fff7ed" stroke="#ED7100" stroke-width="2.5" />
+<rect x="1460" y="660" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="1478.0" y="682.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EC2</text>
+<text x="1506" y="683" font-size="20" font-weight="700" fill="#0F2A43" text-anchor="start">EC2 On-Demand</text>
+<text x="1464" y="716" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">launched by Karpenter</text>
+<rect x="1470" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="1526.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="1610" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="1666.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="1775" y="650" width="305" height="160" rx="10" fill="#fff7ed" stroke="#ED7100" stroke-width="2.5" />
+<rect x="1785" y="660" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="1803.0" y="682.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EC2</text>
+<text x="1831" y="683" font-size="20" font-weight="700" fill="#0F2A43" text-anchor="start">EC2 Spot</text>
+<text x="1789" y="716" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">launched by Karpenter</text>
+<rect x="1795" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="1851.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="1935" y="735" width="112" height="52" rx="8" fill="#ffffff" stroke="#326CE5" stroke-width="2" />
+<text x="1991.0" y="767.0" font-size="17" font-weight="600" fill="#0F2A43" text-anchor="middle">app pod</text>
+<rect x="1450" y="930" width="630" height="340" rx="10" fill="#fffaf3" stroke="#ED7100" stroke-width="2.5" stroke-dasharray="8 5" />
+<text x="1465" y="957" font-size="18" font-weight="700" fill="#0F2A43" text-anchor="start">Managed node group - system (On-Demand)</text>
+<rect x="1470" y="975" width="265" height="125" rx="10" fill="#eaf1ff" stroke="#326CE5" stroke-width="2.5" />
+<text x="1486" y="1006" font-size="20" font-weight="700" fill="#0F2A43" text-anchor="start">AWS LB Controller</text>
+<text x="1486" y="1032" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">watches Ingress,</text>
+<text x="1486" y="1054" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">manages the ALB</text>
+<rect x="1755" y="975" width="305" height="125" rx="10" fill="#eaf1ff" stroke="#326CE5" stroke-width="2.5" />
+<text x="1771" y="1006" font-size="22" font-weight="700" fill="#0F2A43" text-anchor="start">Karpenter</text>
+<text x="1771" y="1032" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">controller</text>
+<text x="1771" y="1054" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">IAM: EKS Pod Identity</text>
+<rect x="1470" y="1135" width="590" height="115" rx="10" fill="#eaf1ff" stroke="#326CE5" stroke-width="2.5" />
+<text x="1486" y="1166" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">NodePool + EC2NodeClass</text>
+<text x="1486" y="1192" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">Spot + On-Demand rules</text>
+<text x="1486" y="1214" font-size="16" font-weight="400" fill="#4B5563" text-anchor="start">subnet / SG discovery via tags</text>
+<rect x="375" y="675" width="250" height="115" rx="10" fill="#ffffff" stroke="#ED7100" stroke-width="3" />
+<rect x="385" y="685" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="403.0" y="707.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EKS</text>
+<text x="431" y="710" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">EKS control plane</text>
+<text x="389" y="743" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">AWS-managed API server</text>
+<text x="389" y="766" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">+ etcd, outside your VPC</text>
+<rect x="375" y="1190" width="250" height="100" rx="10" fill="#ffffff" stroke="#ED7100" stroke-width="3" />
+<rect x="385" y="1200" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="403.0" y="1222.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">ECR</text>
+<text x="431" y="1225" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">Amazon ECR</text>
+<text x="389" y="1258" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">container registry</text>
+<rect x="2230" y="625" width="265" height="90" rx="10" fill="#ffffff" stroke="#E7157B" stroke-width="3" />
+<rect x="2240" y="635" width="36" height="36" rx="6" fill="#E7157B" stroke="none" stroke-width="2" />
+<text x="2258.0" y="658.25" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">CW</text>
+<text x="2286" y="660" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">CloudWatch</text>
+<text x="2244" y="693" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">logs / metrics (optional)</text>
+<rect x="2230" y="755" width="265" height="105" rx="10" fill="#ffffff" stroke="#E7157B" stroke-width="3" />
+<rect x="2240" y="765" width="36" height="36" rx="6" fill="#E7157B" stroke="none" stroke-width="2" />
+<text x="2258.0" y="788.25" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">EB</text>
+<text x="2286" y="790" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">EventBridge</text>
+<text x="2244" y="823" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">Spot interruption,</text>
+<text x="2244" y="846" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">rebalance recommendation</text>
+<rect x="2230" y="905" width="265" height="90" rx="10" fill="#ffffff" stroke="#E7157B" stroke-width="3" />
+<rect x="2240" y="915" width="36" height="36" rx="6" fill="#E7157B" stroke="none" stroke-width="2" />
+<text x="2258.0" y="937.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">SQS</text>
+<text x="2286" y="940" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">SQS queue</text>
+<text x="2244" y="973" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">Karpenter interruption queue</text>
+<rect x="2230" y="1015" width="265" height="90" rx="10" fill="#ffffff" stroke="#ED7100" stroke-width="3" />
+<rect x="2240" y="1025" width="36" height="36" rx="6" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="2258.0" y="1047.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">EC2</text>
+<text x="2286" y="1050" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">EC2 API</text>
+<text x="2244" y="1083" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">CreateFleet / RunInstances</text>
+<rect x="2230" y="1135" width="265" height="115" rx="10" fill="#ffffff" stroke="#DD344C" stroke-width="3" />
+<rect x="2240" y="1145" width="36" height="36" rx="6" fill="#DD344C" stroke="none" stroke-width="2" />
+<text x="2258.0" y="1167.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">IAM</text>
+<text x="2286" y="1170" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">IAM</text>
+<text x="2244" y="1203" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">Controller role: Pod Identity</text>
+<text x="2244" y="1226" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">Node role: instance profile</text>
+<rect x="40" y="960" width="250" height="190" rx="10" fill="#ffffff" stroke="#5B6572" stroke-width="3" />
+<rect x="50" y="970" width="36" height="36" rx="6" fill="#5B6572" stroke="none" stroke-width="2" />
+<text x="68.0" y="992.55" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">GIT</text>
+<text x="96" y="995" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">Git repo</text>
+<text x="54" y="1028" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">GitHub / GitLab</text>
+<text x="54" y="1051" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">main: manifests</text>
+<text x="54" y="1074" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">stage/test  stage/uat</text>
+<text x="54" y="1097" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">stage/prod</text>
+<rect x="40" y="1190" width="250" height="100" rx="10" fill="#ffffff" stroke="#5B6572" stroke-width="3" />
+<rect x="50" y="1200" width="36" height="36" rx="6" fill="#5B6572" stroke="none" stroke-width="2" />
+<text x="68.0" y="1223.25" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">CI</text>
+<text x="96" y="1225" font-size="21" font-weight="700" fill="#0F2A43" text-anchor="start">Developer / CI</text>
+<text x="54" y="1258" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start">build + push image</text>
+<text x="375" y="345" font-size="19" font-weight="700" fill="#0F2A43" text-anchor="start">Colour legend</text>
+<rect x="375" y="362" width="22" height="22" rx="4" fill="#ED7100" stroke="none" stroke-width="2" />
+<text x="407" y="380" font-size="17" font-weight="400" fill="#0F2A43" text-anchor="start">Compute / containers</text>
+<rect x="375" y="396" width="22" height="22" rx="4" fill="#8C4FFF" stroke="none" stroke-width="2" />
+<text x="407" y="414" font-size="17" font-weight="400" fill="#0F2A43" text-anchor="start">Networking</text>
+<rect x="375" y="430" width="22" height="22" rx="4" fill="#E7157B" stroke="none" stroke-width="2" />
+<text x="407" y="448" font-size="17" font-weight="400" fill="#0F2A43" text-anchor="start">Integration / mgmt</text>
+<rect x="375" y="464" width="22" height="22" rx="4" fill="#DD344C" stroke="none" stroke-width="2" />
+<text x="407" y="482" font-size="17" font-weight="400" fill="#0F2A43" text-anchor="start">Security / IAM</text>
+<rect x="375" y="498" width="22" height="22" rx="4" fill="#326CE5" stroke="none" stroke-width="2" />
+<text x="407" y="516" font-size="17" font-weight="400" fill="#0F2A43" text-anchor="start">Kubernetes workloads</text>
+<rect x="375" y="532" width="22" height="22" rx="4" fill="#5B6572" stroke="none" stroke-width="2" />
+<text x="407" y="550" font-size="17" font-weight="400" fill="#0F2A43" text-anchor="start">External, not AWS</text>
+<path d="M625,733 L704,733" fill="none" stroke="#ED7100" stroke-width="3" stroke-linejoin="round" marker-end="url(#m_ED7100)" marker-start="url(#m_ED7100)"/>
+<path d="M1095,650 L1095,517" fill="none" stroke="#6B7280" stroke-width="3" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_6B7280)"/>
+<path d="M1800,650 L1800,517" fill="none" stroke="#6B7280" stroke-width="3" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_6B7280)"/>
+<path d="M1095,425 L1095,306 L1302,306" fill="none" stroke="#6B7280" stroke-width="3" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_6B7280)"/>
+<path d="M1735,425 L1735,306 L1492,306" fill="none" stroke="#6B7280" stroke-width="3" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_6B7280)"/>
+<path d="M2080,695 L2230,695" fill="none" stroke="#E7157B" stroke-width="3" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_E7157B)"/>
+<path d="M165,1190 L165,1150" fill="none" stroke="#5B6572" stroke-width="3" stroke-dasharray="8 5" stroke-linejoin="round" marker-end="url(#m_5B6572)"/>
+<path d="M290,1240 L375,1240" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M625,1240 L810,1240" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M810,1130 L290,1130" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M290,1020 L810,1020" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M1250,1105 L1250,1065" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M1300,975 L1300,810" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_2563EB)"/>
+<path d="M1910,1135 L1910,1100" fill="none" stroke="#C026D3" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_C026D3)"/>
+<path d="M2060,1045 L2230,1045" fill="none" stroke="#C026D3" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_C026D3)"/>
+<path d="M1930,975 L1930,810" fill="none" stroke="#C026D3" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_C026D3)"/>
+<path d="M2362,860 L2362,905" fill="none" stroke="#C026D3" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_C026D3)"/>
+<path d="M2230,950 L2175,950 L2175,993 L2060,993" fill="none" stroke="#C026D3" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_C026D3)"/>
+<path d="M2230,1190 L2195,1190 L2195,1088 L2060,1088" fill="none" stroke="#DD344C" stroke-width="3" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_DD344C)"/>
+<path d="M275,207 L390,207" fill="none" stroke="#15803D" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_15803D)"/>
+<path d="M630,207 L1397,207 L1397,275" fill="none" stroke="#15803D" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_15803D)"/>
+<path d="M1397,337 L1397,410" fill="none" stroke="#15803D" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_15803D)"/>
+<path d="M1330,520 L1330,650" fill="none" stroke="#15803D" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_15803D)"/>
+<path d="M1480,520 L1480,650" fill="none" stroke="#15803D" stroke-width="3.5" stroke-linejoin="round" marker-end="url(#m_15803D)"/>
+<path d="M1470,1037 L1397,1037 L1397,520" fill="none" stroke="#15803D" stroke-width="3.5" stroke-dasharray="9 6" stroke-linejoin="round" marker-end="url(#m_15803D)"/>
+<text x="450" y="1010" font-size="17" font-weight="400" fill="#4B5563" text-anchor="middle">git pull</text>
+<text x="450" y="1120" font-size="17" font-weight="400" fill="#4B5563" text-anchor="middle">commit (promotion)</text>
+<text x="805" y="192" font-size="17" font-weight="400" fill="#4B5563" text-anchor="middle">alias to ALB, HTTPS 443</text>
+<text x="1108" y="579" font-size="16" font-weight="400" fill="#6B7280" text-anchor="start">egress</text>
+<text x="1813" y="579" font-size="16" font-weight="400" fill="#6B7280" text-anchor="start">egress</text>
+<circle cx="332" cy="1240" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="332" y="1246" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<circle cx="715" cy="1240" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="715" y="1246" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+<circle cx="1295" cy="1219" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="1295" y="1225" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+<circle cx="585" cy="1130" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="585" y="1136" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+<circle cx="585" cy="1020" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="585" y="1026" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+<circle cx="1285" cy="1085" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="1285" y="1091" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">6</text>
+<circle cx="1300" cy="895" r="15" fill="#2563EB" stroke="#fff" stroke-width="2.5"/>
+<text x="1300" y="901" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">7</text>
+<circle cx="1885" cy="1117" r="15" fill="#C026D3" stroke="#fff" stroke-width="2.5"/>
+<text x="1885" y="1123" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">8</text>
+<circle cx="2130" cy="1045" r="15" fill="#C026D3" stroke="#fff" stroke-width="2.5"/>
+<text x="2130" y="1051" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">9</text>
+<circle cx="1930" cy="895" r="15" fill="#C026D3" stroke="#fff" stroke-width="2.5"/>
+<text x="1930" y="901" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">10</text>
+<circle cx="2395" cy="882" r="15" fill="#C026D3" stroke="#fff" stroke-width="2.5"/>
+<text x="2395" y="888" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">11</text>
+<circle cx="2140" cy="971" r="15" fill="#C026D3" stroke="#fff" stroke-width="2.5"/>
+<text x="2140" y="977" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">12</text>
+<circle cx="332" cy="207" r="15" fill="#15803D" stroke="#fff" stroke-width="2.5"/>
+<text x="332" y="213" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">13</text>
+<circle cx="1100" cy="207" r="15" fill="#15803D" stroke="#fff" stroke-width="2.5"/>
+<text x="1100" y="213" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">14</text>
+<circle cx="1330" cy="575" r="15" fill="#15803D" stroke="#fff" stroke-width="2.5"/>
+<text x="1330" y="581" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">15</text>
+<circle cx="1397" cy="760" r="15" fill="#15803D" stroke="#fff" stroke-width="2.5"/>
+<text x="1397" y="766" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">16</text>
+<rect x="40" y="1360" width="800" height="245" rx="12" fill="#ffffff" stroke="#2563EB" stroke-width="3" />
+<rect x="40" y="1360" width="800" height="40" rx="12" fill="#2563EB" stroke="#2563EB" stroke-width="3" />
+<rect x="40" y="1380" width="800" height="20" rx="0" fill="#2563EB" stroke="none" stroke-width="2" />
+<text x="58" y="1389" font-size="22" font-weight="700" fill="#ffffff" text-anchor="start">A. Delivery flow (GitOps): Kargo + Argo CD</text>
+<circle cx="70" cy="1426" r="12" fill="#2563EB"/>
+<text x="70" y="1432" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<text x="94" y="1432" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">CI pushes a new image to Amazon ECR</text>
+<circle cx="70" cy="1453" r="12" fill="#2563EB"/>
+<text x="70" y="1459" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+<text x="94" y="1459" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Kargo Warehouse sees the new tag and creates Freight</text>
+<circle cx="70" cy="1480" r="12" fill="#2563EB"/>
+<text x="70" y="1486" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+<text x="94" y="1486" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Freight is promoted stage by stage: test &gt; uat &gt; prod</text>
+<circle cx="70" cy="1507" r="12" fill="#2563EB"/>
+<text x="70" y="1513" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+<text x="94" y="1513" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Kargo commits the change to Git (branch stage/&lt;name&gt;)</text>
+<circle cx="70" cy="1534" r="12" fill="#2563EB"/>
+<text x="70" y="1540" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+<text x="94" y="1540" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Argo CD pulls the desired state from Git</text>
+<circle cx="70" cy="1561" r="12" fill="#2563EB"/>
+<text x="70" y="1567" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">6</text>
+<text x="94" y="1567" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Kargo triggers an Argo CD sync of the Application</text>
+<circle cx="70" cy="1588" r="12" fill="#2563EB"/>
+<text x="70" y="1594" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">7</text>
+<text x="94" y="1594" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Argo CD applies manifests, pods roll out on EKS</text>
+<rect x="880" y="1360" width="800" height="245" rx="12" fill="#ffffff" stroke="#C026D3" stroke-width="3" />
+<rect x="880" y="1360" width="800" height="40" rx="12" fill="#C026D3" stroke="#C026D3" stroke-width="3" />
+<rect x="880" y="1380" width="800" height="20" rx="0" fill="#C026D3" stroke="none" stroke-width="2" />
+<text x="898" y="1389" font-size="22" font-weight="700" fill="#ffffff" text-anchor="start">B. Node autoscaling flow: Karpenter</text>
+<circle cx="910" cy="1426" r="12" fill="#C026D3"/>
+<text x="910" y="1432" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">8</text>
+<text x="934" y="1432" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Sees Pending pods, reads NodePool + EC2NodeClass</text>
+<circle cx="910" cy="1453" r="12" fill="#C026D3"/>
+<text x="910" y="1459" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">9</text>
+<text x="934" y="1459" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Calls EC2 CreateFleet (Spot + On-Demand)</text>
+<circle cx="910" cy="1480" r="12" fill="#C026D3"/>
+<text x="910" y="1486" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">10</text>
+<text x="934" y="1486" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">New EC2 nodes join the cluster (private subnets)</text>
+<circle cx="910" cy="1507" r="12" fill="#C026D3"/>
+<text x="910" y="1513" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">11</text>
+<text x="934" y="1513" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">EventBridge sends Spot interruption events to SQS</text>
+<circle cx="910" cy="1534" r="12" fill="#C026D3"/>
+<text x="910" y="1540" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">12</text>
+<text x="934" y="1540" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">Karpenter polls SQS, drains and replaces the node</text>
+<text x="898" y="1567" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start" font-style="italic">IAM (red dashed): Karpenter controller uses EKS Pod Identity;</text>
+<text x="898" y="1592" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start" font-style="italic">nodes use the node IAM role via instance profile.</text>
+<rect x="1720" y="1360" width="800" height="245" rx="12" fill="#ffffff" stroke="#15803D" stroke-width="3" />
+<rect x="1720" y="1360" width="800" height="40" rx="12" fill="#15803D" stroke="#15803D" stroke-width="3" />
+<rect x="1720" y="1380" width="800" height="20" rx="0" fill="#15803D" stroke="none" stroke-width="2" />
+<text x="1738" y="1389" font-size="22" font-weight="700" fill="#ffffff" text-anchor="start">C. Request traffic flow</text>
+<circle cx="1750" cy="1426" r="12" fill="#15803D"/>
+<text x="1750" y="1432" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">13</text>
+<text x="1774" y="1432" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">User resolves the domain in Route 53 (optional)</text>
+<circle cx="1750" cy="1453" r="12" fill="#15803D"/>
+<text x="1750" y="1459" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">14</text>
+<text x="1774" y="1459" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">HTTPS reaches the ALB in public subnets via the IGW</text>
+<circle cx="1750" cy="1480" r="12" fill="#15803D"/>
+<text x="1750" y="1486" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">15</text>
+<text x="1774" y="1486" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">ALB forwards to app pod IPs in private subnets</text>
+<circle cx="1750" cy="1507" r="12" fill="#15803D"/>
+<text x="1750" y="1513" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">16</text>
+<text x="1774" y="1513" font-size="19" font-weight="400" fill="#0F2A43" text-anchor="start">AWS LB Controller reconciles Ingress to ALB (dashed)</text>
+<text x="1738" y="1540" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start" font-style="italic">Grey dashed: private nodes reach ECR / Git / AWS APIs</text>
+<text x="1738" y="1565" font-size="17" font-weight="400" fill="#4B5563" text-anchor="start" font-style="italic">through NAT Gateway &gt; IGW (or VPC endpoints).</text>
+</svg>

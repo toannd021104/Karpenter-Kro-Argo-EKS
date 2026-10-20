@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" font-family="Liberation Sans, DejaVu Sans, Arial, sans-serif">
+  <title>Kargo: Warehouse tạo Freight, Freight đi qua các Stage</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <!-- sources -->
+  <text x="120" y="28" font-size="19" text-anchor="middle" fill="#475569">image, Git, Helm chart mới</text>
+  <line x1="120" y1="36" x2="120" y2="66" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+  <g stroke-width="2.5">
+    <rect x="20"  y="70" width="200" height="130" rx="14" fill="#ede9fe" stroke="#7c3aed"/>
+    <rect x="260" y="70" width="200" height="130" rx="14" fill="#fae8ff" stroke="#a21caf"/>
+    <rect x="500" y="70" width="200" height="130" rx="14" fill="#e0f2fe" stroke="#0284c7"/>
+    <rect x="740" y="70" width="200" height="130" rx="14" fill="#e0f2fe" stroke="#0284c7"/>
+    <rect x="980" y="70" width="200" height="130" rx="14" fill="#dcfce7" stroke="#16a34a"/>
+  </g>
+  <g fill="#334155" stroke="#334155" stroke-width="3">
+    <line x1="222" y1="135" x2="256" y2="135" marker-end="url(#a)"/>
+    <line x1="462" y1="135" x2="496" y2="135" marker-end="url(#a)"/>
+    <line x1="702" y1="135" x2="736" y2="135" marker-end="url(#a)"/>
+    <line x1="942" y1="135" x2="976" y2="135" marker-end="url(#a)"/>
+  </g>
+  <g text-anchor="middle" fill="#0f172a">
+    <text x="120" y="108" font-size="24" font-weight="700">Warehouse</text>
+    <text x="120" y="142" font-size="19">kho theo dõi</text>
+    <text x="120" y="168" font-size="19">nguồn artifact</text>
+
+    <text x="360" y="108" font-size="24" font-weight="700">Freight</text>
+    <text x="360" y="142" font-size="19">image + commit</text>
+    <text x="360" y="168" font-size="19">đi cùng nhau</text>
+
+    <text x="600" y="108" font-size="24" font-weight="700">Stage: test</text>
+    <text x="600" y="142" font-size="19">nhận Freight</text>
+    <text x="600" y="168" font-size="19">trực tiếp</text>
+
+    <text x="840" y="108" font-size="24" font-weight="700">Stage: uat</text>
+    <text x="840" y="142" font-size="19">chỉ nhận Freight</text>
+    <text x="840" y="168" font-size="19">đã verify ở test</text>
+
+    <text x="1080" y="108" font-size="24" font-weight="700">Stage: prod</text>
+    <text x="1080" y="142" font-size="19">chỉ nhận Freight</text>
+    <text x="1080" y="168" font-size="19">đã verify ở uat</text>
+  </g>
+  <!-- promotion bar -->
+  <rect x="500" y="250" width="680" height="70" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2.5"/>
+  <g text-anchor="middle" fill="#0f172a">
+    <text x="840" y="280" font-size="22" font-weight="700">Promotion = các bước đẩy Freight vào Stage</text>
+    <text x="840" y="306" font-size="19">commit manifest vào Git, Argo CD sync lên cluster</text>
+  </g>
+  <g fill="none" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="6 5">
+    <line x1="600" y1="202" x2="600" y2="246" marker-end="url(#a)"/>
+    <line x1="840" y1="202" x2="840" y2="246" marker-end="url(#a)"/>
+    <line x1="1080" y1="202" x2="1080" y2="246" marker-end="url(#a)"/>
+  </g>
+</svg>

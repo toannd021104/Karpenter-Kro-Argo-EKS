@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" font-family="Liberation Sans, DejaVu Sans, Arial, sans-serif">
+  <title>Karpenter: từ Pod Pending đến Node Ready và consolidation</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <!-- row 1 -->
+  <g stroke-width="2.5">
+    <rect x="20"  y="30" width="200" height="130" rx="14" fill="#fee2e2" stroke="#dc2626"/>
+    <rect x="260" y="30" width="200" height="130" rx="14" fill="#ccfbf1" stroke="#0d9488"/>
+    <rect x="500" y="30" width="200" height="130" rx="14" fill="#e0f2fe" stroke="#0284c7"/>
+    <rect x="740" y="30" width="200" height="130" rx="14" fill="#fef3c7" stroke="#d97706"/>
+    <rect x="980" y="30" width="200" height="130" rx="14" fill="#dcfce7" stroke="#16a34a"/>
+  </g>
+  <g fill="#334155" stroke="#334155" stroke-width="3">
+    <line x1="222" y1="95" x2="256" y2="95" marker-end="url(#a)"/>
+    <line x1="462" y1="95" x2="496" y2="95" marker-end="url(#a)"/>
+    <line x1="702" y1="95" x2="736" y2="95" marker-end="url(#a)"/>
+    <line x1="942" y1="95" x2="976" y2="95" marker-end="url(#a)"/>
+  </g>
+  <g text-anchor="middle" fill="#0f172a">
+    <text x="120" y="68"  font-size="24" font-weight="700">1. Pod Pending</text>
+    <text x="120" y="102" font-size="19">không còn node</text>
+    <text x="120" y="128" font-size="19">đủ chỗ</text>
+
+    <text x="360" y="68"  font-size="24" font-weight="700">2. Karpenter</text>
+    <text x="360" y="102" font-size="19">gom Pod chờ,</text>
+    <text x="360" y="128" font-size="19">tính cần bao nhiêu</text>
+
+    <text x="600" y="68"  font-size="24" font-weight="700">3. Luật</text>
+    <text x="600" y="102" font-size="19">NodePool (loại node)</text>
+    <text x="600" y="128" font-size="19">EC2NodeClass (AWS)</text>
+
+    <text x="840" y="68"  font-size="24" font-weight="700">4. EC2 Fleet</text>
+    <text x="840" y="102" font-size="19">chọn instance rẻ,</text>
+    <text x="840" y="128" font-size="19">Spot hoặc on-demand</text>
+
+    <text x="1080" y="68"  font-size="24" font-weight="700">5. Node Ready</text>
+    <text x="1080" y="102" font-size="19">Pod được xếp</text>
+    <text x="1080" y="128" font-size="19">lên node mới</text>
+  </g>
+  <!-- consolidation -->
+  <rect x="500" y="230" width="680" height="80" rx="14" fill="#f1f5f9" stroke="#64748b" stroke-width="2.5" stroke-dasharray="8 6"/>
+  <g text-anchor="middle" fill="#0f172a">
+    <text x="840" y="264" font-size="24" font-weight="700">6. Consolidation</text>
+    <text x="840" y="294" font-size="19">node trống hoặc dư: dồn Pod sang chỗ khác rồi xóa node</text>
+  </g>
+  <g fill="none" stroke="#334155" stroke-width="3">
+    <line x1="1080" y1="162" x2="1080" y2="226" marker-end="url(#a)"/>
+    <path d="M500,270 L360,270 L360,164" marker-end="url(#a)"/>
+  </g>
+</svg>
